@@ -1,0 +1,72 @@
+Domain,Table_Name,Description,Primary_Key,Natural_Key_or_FKs,Typical_Columns
+PARTY & CUSTOMER,LEG_PARTY,Party master record,party_id,party_id,name_last; name_first; dob; tax_id; gender; created_ts; updated_ts
+PARTY & CUSTOMER,LEG_PARTY_ADDRESS,Addresses for a party,"party_id,address_id",address_id,address_line1; address_line2; city; state; postal_code; country; address_type; effective_start; effective_end
+PARTY & CUSTOMER,LEG_PARTY_CONTACT,Emails/phones for a party,"party_id,contact_id",contact_id,contact_type; contact_value; preferred_flag; effective_start; effective_end
+PARTY & CUSTOMER,LEG_CUSTOMER,Customer profile (aggregates party + preferences),customer_id,customer_id,party_id; preferred_language; marketing_opt_in; risk_score
+PARTY & CUSTOMER,LEG_POLICYHOLDER,Policy owner records,policyholder_id,policyholder_id,party_id; customer_id; kyc_status; residency_status
+PARTY & CUSTOMER,LEG_INSURED,Insured/annuitant details,insured_id,insured_id,party_id; height_cm; weight_kg; smoker_flag; occupation_code; risk_class_code
+PARTY & CUSTOMER,LEG_BENEFICIARY,Beneficiary person/org,beneficiary_id,beneficiary_id,party_id; relationship_code; tax_id; revocable_flag
+PARTY & CUSTOMER,LEG_BENEF_ALLOCATION,Allocation of benefit among beneficiaries,"policy_number,beneficiary_id",alloc_id,allocation_pct; priority; effective_start; effective_end
+PARTY & CUSTOMER,LEG_AGENT,Writing agent,agent_id,agent_id,party_id; license_state; license_number; active_flag
+PARTY & CUSTOMER,LEG_AGENCY,Agency master,agency_id,agency_id,name; fein; address_id; active_flag
+PARTY & CUSTOMER,LEG_AGENT_HIERARCHY,Agent hierarchy and splits,"agent_id,level",agent_hier_id,upline_agent_id; split_pct; effective_start; effective_end
+COMMISSIONS,LEG_COMMISSION_PLAN,Commission plan definitions,plan_id,plan_id,name; effective_start; effective_end; status_code
+COMMISSIONS,LEG_COMMISSION_RATE,Rates per plan/product,"plan_id,product_code,level",rate_id,rate_pct; cap_amount; floor_amount; effective_start; effective_end
+COMMISSIONS,LEG_COMMISSION_TXN,Calculated commissions,commission_txn_id,commission_txn_id,policy_number; agent_id; amount; txn_date; period_id; gl_posted_flag
+POLICY,LEG_POLICY_MASTER,Policy header,policy_number,policy_number,product_code; issue_date; effective_date; expiry_date; status_code; owner_id; insured_id; face_amount; premium_mode_code
+POLICY,LEG_POLICY_TERM,Term slices per policy,"policy_number,term_seq",term_id,term_start; term_end; status_code; premium_mode_code
+POLICY,LEG_POLICY_STATUS_HIST,Policy status history,"policy_number,as_of_date",status_hist_id,status_code; reason_code; as_of_date
+POLICY,LEG_POLICY_NOTE,Notes on policy,note_id,note_id,policy_number; note_text; note_type; created_by; created_ts
+DOCUMENTS,LEG_FORM,Form instances,form_id,form_id,policy_number; form_code; edition; uri; hash; created_ts
+DOCUMENTS,LEG_DOCUMENT,Documents linked to policy/person,document_id,document_id,entity_type; entity_id; doc_type; mime_type; uri; created_ts
+PRODUCT,LEG_PRODUCT,Product master,product_code,product_code,lob_code; name; state_approved_flag; effective_start; effective_end
+PRODUCT,LEG_PRODUCT_STATE_RULE,State-specific product rules,"product_code,state",rule_id,age_min; age_max; min_face; max_face; underwriting_class_allowed
+UW,LEG_UNDERWRITING_RULE,Underwriting rules (legacy),rule_code,rule_code,description; severity; action_code
+UW,LEG_RISK_CLASS,Risk class lookup,risk_class_code,risk_class_code,description; table_rating
+COVERAGE,LEG_COVERAGE,Base coverage per policy,"policy_number,coverage_seq",coverage_id,coverage_code; effective_start; effective_end; sum_assured; premium_amount
+COVERAGE,LEG_COVERAGE_TERM,Coverage terms/options,"coverage_id,term_code",cov_term_id,term_type; numeric_value; text_value; bool_value; currency
+RIDER,LEG_RIDER,Rider on policy,"policy_number,rider_seq",rider_id,rider_code; effective_start; effective_end; rider_sum_assured; rider_premium
+RIDER,LEG_RIDER_TERM,Rider terms/options,"rider_id,term_code",rider_term_id,term_type; numeric_value; text_value; bool_value; currency
+RATING,LEG_RATE_TABLE,Rate tables (legacy),rate_table_id,rate_table_id,product_code; state; age; gender; smoker_flag; rate_per_1000; effective_start; effective_end
+RATING,LEG_RATE_FACTOR,Rate factors applied,"policy_number,factor_code",rate_factor_id,factor_value; source_code; effective_start; effective_end
+BILLING,LEG_BILLING_ACCOUNT,Billing account master,billing_acct_id,billing_acct_id,customer_id; autopay_flag; bill_to_address_id; dunning_level
+BILLING,LEG_PREMIUM_SCHEDULE,Premium due schedule,"policy_number,sequence_no",prem_sched_id,due_date; amount_due_cents; grace_days; status_code
+BILLING,LEG_PREMIUM_INVOICE,Invoices,invoice_number,invoice_number,billing_acct_id; policy_number; invoice_date; due_date; amount; status_code
+BILLING,LEG_PREMIUM_PAYMENT,Payments,payment_id,payment_id,invoice_number; policy_number; amount; method_code; check_no; posted_ts
+BILLING,LEG_REFUND,Refunds,refund_id,refund_id,policy_number; amount; method_code; reason_code; posted_ts
+BILLING,LEG_ADJUSTMENT,Adjustments/Write-offs,adjustment_id,adjustment_id,invoice_number; amount; adj_type; reason_code; posted_ts
+BILLING,LEG_DUNNING_EVENT,Dunning lifecycle,"billing_acct_id,event_dt",dunning_event_id,level_code; notice_sent_ts
+BILLING,LEG_PAYMENT_METHOD,Payment instruments,pay_method_id,pay_method_id,customer_id; type_code; token_ref; masked_account; expiry_mm; expiry_yy
+CLAIMS,LEG_CLAIM,Claim header,claim_number,claim_number,policy_number; claim_type_code; loss_date; reported_date; status_code; reserve_total; paid_total
+CLAIMS,LEG_CLAIM_EVENT,Claim incidents/events,"claim_number,event_seq",claim_event_id,event_type; event_dt; description; location_text
+CLAIMS,LEG_CLAIM_PARTY,Roles on claim,"claim_number,party_id,role_code",claim_party_id,role_code; contact_pref
+CLAIMS,LEG_CLAIM_RESERVE,Reserves,"claim_number,reserve_seq",reserve_id,bucket_code; amount; open_flag; created_ts
+CLAIMS,LEG_CLAIM_PAYMENT,Payments,payment_id,payment_id,claim_number; payee_party_id; amount; method_code; check_no; posted_ts; gl_posted_flag
+CLAIMS,LEG_CLAIM_RECOVERY,Recoveries/subrogation,recovery_id,recovery_id,claim_number; source_code; amount; posted_ts
+CLAIMS,LEG_LITIGATION,Litigation matters,matter_id,matter_id,claim_number; court; status_code; attorney_party_id; next_hearing_dt
+CLAIMS,LEG_SIU_REFERRAL,SIU referrals,siu_id,siu_id,claim_number; score; reason_text; status_code
+CLAIMS,LEG_SUBROGATION,Subrogation cases,subro_id,subro_id,claim_number; demand_amount; status_code
+CLAIMS,LEG_PROVIDER,Medical providers,provider_id,provider_id,party_id; npi; specialty_code; active_flag
+CLAIMS,LEG_MEDICAL_BILL,Medical bills,bill_id,bill_id,claim_number; provider_id; cpt_code; amount; allowed_amount; paid_amount
+REINS,LEG_REINS_AGREEMENT,Reinsurance agreements,reins_agr_id,reins_agr_id,name; type_code; retention_amount; treaty_limit; effective_start; effective_end
+REINS,LEG_REINS_CESSION,Cessions,cession_id,cession_id,policy_number; reins_agr_id; ceded_pct; ceded_premium; ceded_risk_amount
+FINANCE,LEG_GL_POSTING,GL postings,gl_txn_id,gl_txn_id,source_system; source_id; account_no; amount; posted_ts
+WORKFLOW,LEG_ACTIVITY,Activities,activity_id,activity_id,entity_type; entity_id; activity_type; due_dt; status_code; assigned_to
+WORKFLOW,LEG_TASK,Tasks,task_id,task_id,entity_type; entity_id; task_type; created_ts; completed_ts; user_id
+SECURITY,LEG_USER,System users,user_id,user_id,username; email; active_flag; last_login_ts
+SECURITY,LEG_ROLE,Roles,role_code,role_code,description; active_flag
+SECURITY,LEG_USER_ROLE,User-role mapping,"user_id,role_code",user_role_id,effective_start; effective_end
+REFDATA,LEG_CODE_STATUS,Status codes,status_code,status_code,domain; description; active_flag
+REFDATA,LEG_CODE_PRODUCT,Product codes,product_code,product_code,lob_code; description; active_flag
+REFDATA,LEG_CODE_RIDER,Rider codes,rider_code,rider_code,description; active_flag
+REFDATA,LEG_CODE_STATE,State codes,state_code,state_code,country_code; name; active_flag
+REFDATA,LEG_CODE_RELATIONSHIP,Relationship codes,relationship_code,relationship_code,description; active_flag
+REFDATA,LEG_CODE_PAYMENT_METHOD,Payment method codes,method_code,method_code,description; active_flag
+REFDATA,LEG_TAX_TABLE,Tax rates,"jurisdiction_code,effective_start",tax_row_id,rate_pct; description
+REFDATA,LEG_BANK_ACCOUNT,Bank accounts (EFT),bank_acct_id,bank_acct_id,customer_id; masked_acct; routing_no; status_code
+AUDIT,LEG_AUDIT_LOG,Change log,audit_id,audit_id,entity_type; entity_id; change_type; old_value; new_value; changed_by; changed_ts
+INTEGRATION,LEG_FEED_OUT,Outbound feeds,feed_id,feed_id,target_system; frequency; last_run_ts; file_pattern; transport
+INTEGRATION,LEG_FEED_IN,Inbound feeds,feed_id,feed_id,source_system; frequency; last_run_ts; file_pattern; transport
+INTEGRATION,LEG_BATCH_JOB,Batch jobs,job_name,job_name,schedule_cron; last_run_ts; status_code; jcl_member
+INTEGRATION,LEG_JCL_SCHEDULE,JCL schedules,jcl_member,jcl_member,job_name; dependency; schedule_cron
+INTEGRATION,LEG_ERROR_LOG,Errors,error_id,error_id,source_system; entity_type; entity_id; error_code; error_text; created_ts

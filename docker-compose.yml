@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  schema-mapping:
+    build: .
+    container_name: schema-mapping-app
+    ports:
+      - "8501:8501"
+    volumes:
+      # Mount data directories for persistence
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+      - ./models:/app/models
+      - ./configs:/app/configs
+      # Mount logs directory
+      - ./logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - schema-mapping-network
+
+  # Optional: Add a data processing service for batch jobs
+  schema-processor:
+    build: .
+    container_name: schema-processor
+    command: >
+      sh -c "
+        echo 'Starting schema processing pipeline...' &&
+        python config.py &&
+        python generate_tables.py &&
+        python -m src.train --config configs/config.yaml &&
+        python -m src.predict --config configs/config.yaml &&
+        python -m src.agent --in outputs/mapping_suggestions.csv --out outputs/verified_mappings.csv --cfg configs/config.yaml &&
+        python generate_mappings.py &&
+        echo 'Schema processing completed!'
+      "
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+      - ./models:/app/models
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      - schema-mapping
+    networks:
+      - schema-mapping-network
+    profiles:
+      - processing  # Only run when explicitly requested
+
+networks:
+  schema-mapping-network:
+    driver: bridge
+
+volumes:
+  data-volume:
+  outputs-volume:
+  models-volume:
+  configs-volume:

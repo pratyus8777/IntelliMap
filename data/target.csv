@@ -1,0 +1,71 @@
+Domain,Table_Name,Description,Primary_Key,Natural_Key_or_FKs,Typical_Columns
+PARTY & CUSTOMER,LP_PARTY,Party master record,party_id,party_id,first_name; last_name; dob; tax_id; gender; created_ts; updated_ts
+PARTY & CUSTOMER,LP_PARTY_ADDRESS,Addresses for a party,"party_id,address_id",address_id,line1; line2; city; state; postal_code; country; type_code; effective_start; effective_end
+PARTY & CUSTOMER,LP_PARTY_CONTACT,Emails/phones for a party,"party_id,contact_id",contact_id,contact_type; contact_value; preferred_flag; effective_start; effective_end
+PARTY & CUSTOMER,LP_CUSTOMER,Customer profile,customer_id,customer_id,party_id; preferences_json; kyc_status; risk_score
+PARTY & CUSTOMER,LP_POLICY_OWNER,Policy owner,owner_id,owner_id,party_id; customer_id; residency_status; kyc_status
+PARTY & CUSTOMER,LP_INSURED,Insured/annuitant,insured_id,insured_id,party_id; build_json; smoker_flag; occupation_code; risk_class_code
+PARTY & CUSTOMER,LP_BENEFICIARY,Beneficiary record,beneficiary_id,beneficiary_id,party_id; relationship_code; tax_id; revocable_flag
+PARTY & CUSTOMER,LP_BENEFICIARY_ALLOCATION,Benefit allocation,"policy_id,beneficiary_id",alloc_id,allocation_pct; priority; effective_start; effective_end
+PARTY & CUSTOMER,LP_AGENT,Agent,agent_id,agent_id,party_id; license_state; license_no; active_flag
+PARTY & CUSTOMER,LP_AGENCY,Agency master,agency_id,agency_id,name; fein; address_id; active_flag
+PARTY & CUSTOMER,LP_AGENT_HIERARCHY,Agent hierarchy,"agent_id,level",agent_hier_id,upline_agent_id; split_pct; effective_start; effective_end
+COMMISSIONS,LP_COMMISSION_PLAN,Commission plans,plan_id,plan_id,name; effective_start; effective_end; status_code
+COMMISSIONS,LP_COMMISSION_RATE,Plan rates,"plan_id,product_code,level",rate_id,rate_pct; cap_amount; floor_amount; effective_start; effective_end
+COMMISSIONS,LP_COMMISSION_TXN,Commission transactions,commission_txn_id,commission_txn_id,policy_id; agent_id; amount; txn_date; period_id; gl_posted_flag
+POLICY,LP_POLICY,Policy header,policy_id,policy_number,product_code; issue_date; effective_date; expiry_date; status_code; owner_id; insured_id; face_amount; premium_mode_code
+POLICY,LP_POLICY_TERM,Policy terms,"policy_id,term_seq",term_id,term_start; term_end; status_code; premium_mode_code
+POLICY,LP_POLICY_STATUS_HIST,Status history,"policy_id,as_of_date",status_hist_id,status_code; reason_code; as_of_date
+POLICY,LP_POLICY_NOTE,Policy notes,note_id,note_id,policy_id; note_text; note_type; created_by; created_ts
+DOCUMENTS,LP_POLICY_FORM,Forms,form_id,form_id,policy_id; form_code; edition; uri; hash; created_ts
+DOCUMENTS,LP_DOCUMENT,Documents,document_id,document_id,entity_type; entity_id; doc_type; mime_type; uri; created_ts
+PRODUCT,LP_PRODUCT,Product catalog,product_code,product_code,lob_code; name; state_approved_flag; effective_start; effective_end
+PRODUCT,LP_PRODUCT_RULE,State/product rules,"product_code,state",rule_id,age_min; age_max; min_face; max_face; underwriting_class_allowed
+UW,LP_UNDERWRITING_RULE,Underwriting rules,rule_code,rule_code,description; severity; action_code
+UW,LP_RISK_CLASS,Risk class,risk_class_code,risk_class_code,description; table_rating
+COVERAGE,LP_POLICY_COVERAGE,Policy coverages,"policy_id,coverage_seq",coverage_id,coverage_code; effective_start; effective_end; sum_assured; premium_amount
+COVERAGE,LP_COVERAGE_TERM,Coverage terms,"coverage_id,term_code",cov_term_id,term_type; numeric_value; text_value; bool_value; currency
+RIDER,LP_POLICY_RIDER,Policy riders,"policy_id,rider_seq",rider_id,rider_code; effective_start; effective_end; rider_sum_assured; rider_premium
+RIDER,LP_RIDER_TERM,Rider terms,"rider_id,term_code",rider_term_id,term_type; numeric_value; text_value; bool_value; currency
+RATING,LP_RATE_TABLE,Rate table,rate_table_id,rate_table_id,product_code; state; age; gender; smoker_flag; rate_per_1000; effective_start; effective_end
+RATING,LP_RATE_FACTOR,Rate factor,"policy_id,factor_code",rate_factor_id,factor_value; source_code; effective_start; effective_end
+BILLING,LP_BILLING_ACCOUNT,Billing account,billing_acct_id,billing_acct_id,customer_id; autopay_flag; bill_to_address_id; dunning_level
+BILLING,LP_INVOICE,Invoices,invoice_id,invoice_number,billing_acct_id; policy_id; invoice_date; due_date; amount; status_code
+BILLING,LP_PAYMENT,Payments,payment_id,payment_id,invoice_id; policy_id; amount; method_code; reference_no; posted_ts
+BILLING,LP_REFUND,Refunds,refund_id,refund_id,policy_id; amount; method_code; reason_code; posted_ts
+BILLING,LP_ADJUSTMENT,Adjustments,adjustment_id,adjustment_id,invoice_id; amount; adj_type; reason_code; posted_ts
+BILLING,LP_DUNNING_EVENT,Dunning events,"billing_acct_id,event_dt",dunning_event_id,level_code; notice_sent_ts
+BILLING,LP_PAYMENT_METHOD,Payment methods,pay_method_id,pay_method_id,customer_id; type_code; token_ref; masked_account; expiry_mm; expiry_yy
+BILLING,LP_PAYMENT_ALLOCATION,Payment allocations,"payment_id,invoice_id",alloc_id,amount_applied; applied_ts
+CLAIMS,LP_CLAIM,Claim header,claim_id,claim_number,policy_id; claim_type_code; loss_date; reported_date; status_code; reserve_total; paid_total
+CLAIMS,LP_CLAIM_EVENT,Claim incidents/events,"claim_id,event_seq",claim_event_id,event_type; event_dt; description; location_text
+CLAIMS,LP_CLAIM_PARTY_ROLE,Claim party roles,"claim_id,party_id,role_code",claim_party_id,role_code; contact_pref
+CLAIMS,LP_RESERVE,Reserves,"claim_id,reserve_seq",reserve_id,bucket_code; amount; open_flag; created_ts
+CLAIMS,LP_CLAIM_PAYMENT,Claim payments,payment_id,payment_id,claim_id; payee_party_id; amount; method_code; reference_no; posted_ts; gl_posted_flag
+CLAIMS,LP_CLAIM_RECOVERY,Recoveries,recovery_id,recovery_id,claim_id; source_code; amount; posted_ts
+CLAIMS,LP_LITIGATION,Litigation,matter_id,matter_id,claim_id; court; status_code; attorney_party_id; next_hearing_dt
+CLAIMS,LP_SIU_CASE,SIU cases,siu_id,siu_id,claim_id; score; reason_text; status_code
+CLAIMS,LP_SUBROGATION,Subrogation,subro_id,subro_id,claim_id; demand_amount; status_code
+CLAIMS,LP_PROVIDER,Providers,provider_id,provider_id,party_id; npi; specialty_code; active_flag
+CLAIMS,LP_MEDICAL_BILL,Medical bills,bill_id,bill_id,claim_id; provider_id; cpt_code; amount; allowed_amount; paid_amount
+REINS,LP_REINS_AGREEMENT,Reinsurance agreements,reins_agr_id,reins_agr_id,name; type_code; retention_amount; treaty_limit; effective_start; effective_end
+REINS,LP_REINS_CESSION,Cessions,cession_id,cession_id,policy_id; reins_agr_id; ceded_pct; ceded_premium; ceded_risk_amount
+FINANCE,LP_GL_ENTRY,GL entries,gl_txn_id,gl_txn_id,source_system; source_id; account_no; amount; posted_ts
+WORKFLOW,LP_ACTIVITY,Activities,activity_id,activity_id,entity_type; entity_id; activity_type; due_dt; status_code; assigned_to
+WORKFLOW,LP_TASK,Tasks,task_id,task_id,entity_type; entity_id; task_type; created_ts; completed_ts; user_id
+SECURITY,LP_USER,Users,user_id,user_id,username; email; active_flag; last_login_ts
+SECURITY,LP_ROLE,Roles,role_code,role_code,description; active_flag
+SECURITY,LP_USER_ROLE,User-role mapping,"user_id,role_code",user_role_id,effective_start; effective_end
+REFDATA,LP_CODE_STATUS,Status codes,status_code,status_code,domain; description; active_flag
+REFDATA,LP_CODE_PRODUCT,Product codes,product_code,product_code,lob_code; description; active_flag
+REFDATA,LP_CODE_RIDER,Rider codes,rider_code,rider_code,description; active_flag
+REFDATA,LP_CODE_STATE,State codes,state_code,state_code,country_code; name; active_flag
+REFDATA,LP_CODE_RELATIONSHIP,Relationship codes,relationship_code,relationship_code,description; active_flag
+REFDATA,LP_CODE_PAYMENT_METHOD,Payment method codes,method_code,method_code,description; active_flag
+REFDATA,LP_TAX_TABLE,Tax table,"jurisdiction_code,effective_start",tax_row_id,rate_pct; description
+REFDATA,LP_BANK_ACCOUNT,Bank accounts,bank_acct_id,bank_acct_id,customer_id; masked_acct; routing_no; status_code
+AUDIT,LP_AUDIT_EVENT,Audit events,audit_id,audit_id,entity_type; entity_id; change_type; old_value; new_value; changed_by; changed_ts
+INTEGRATION,LP_OUTBOUND_FEED,Outbound feeds,feed_id,feed_id,target_system; frequency; last_run_ts; file_pattern; transport
+INTEGRATION,LP_INBOUND_FEED,Inbound feeds,feed_id,feed_id,source_system; frequency; last_run_ts; file_pattern; transport
+INTEGRATION,LP_JOB_SCHEDULE,Job schedules,job_name,job_name,schedule_cron; last_run_ts; status_code
+INTEGRATION,LP_ERROR_EVENT,Error events,error_id,error_id,source_system; entity_type; entity_id; error_code; error_text; created_ts

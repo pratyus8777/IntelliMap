@@ -1,0 +1,1672 @@
+-- ==============================
+-- ENRICHED LEGACY DB2-STYLE DDL
+-- ==============================
+
+CREATE TABLE LEG_PARTY (
+    PARTY_ID             CHAR(12)        NOT NULL,
+    TITLE                VARCHAR(10),
+    NAME_FIRST           VARCHAR(50),
+    NAME_MIDDLE          VARCHAR(50),
+    NAME_LAST            VARCHAR(50),
+    DOB                  DATE,
+    GENDER               CHAR(1),
+    TAX_ID               CHAR(11),
+    EMAIL                VARCHAR(120),
+    PHONE_PRIMARY        VARCHAR(20),
+    ACTIVE_FLAG          CHAR(1)         DEFAULT 'Y',
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_PARTY PRIMARY KEY (PARTY_ID)
+);
+
+CREATE TABLE LEG_PARTY_ADDRESS (
+    ADDRESS_ID           CHAR(12)        NOT NULL,
+    PARTY_ID             CHAR(12),
+    ADDRESS_LINE1        VARCHAR(100),
+    ADDRESS_LINE2        VARCHAR(100),
+    CITY                 VARCHAR(60),
+    STATE                CHAR(2),
+    POSTAL_CODE          VARCHAR(10),
+    COUNTRY              CHAR(2),
+    ADDRESS_TYPE         CHAR(2),
+    EFFECTIVE_START      DATE,
+    EFFECTIVE_END        DATE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_PARTY_ADDRESS PRIMARY KEY (ADDRESS_ID)
+);
+
+CREATE TABLE LEG_PARTY_CONTACT (
+    CONTACT_ID           CHAR(12)        NOT NULL,
+    PARTY_ID             CHAR(12),
+    CONTACT_TYPE         CHAR(2),
+    CONTACT_VALUE        VARCHAR(200),
+    PREFERRED_FLAG       CHAR(1)         DEFAULT 'N',
+    EFFECTIVE_START      DATE,
+    EFFECTIVE_END        DATE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_PARTY_CONTACT PRIMARY KEY (CONTACT_ID)
+);
+
+CREATE TABLE LEG_CUSTOMER (
+    CUSTOMER_ID          CHAR(12)        NOT NULL,
+    PARTY_ID             CHAR(12)        NOT NULL,
+    PREF_LANGUAGE_CD     CHAR(2),
+    RISK_SCORE           DECIMAL(5,2),
+    KYC_STATUS_CD        CHAR(2),
+    RESIDENCY_STATUS_CD  CHAR(2),
+    ALERT_OPT_IN_FL      CHAR(1)         DEFAULT 'N',
+    MARKETING_OPT_IN_FL  CHAR(1)         DEFAULT 'N',
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CUSTOMER PRIMARY KEY (CUSTOMER_ID)
+);
+
+CREATE TABLE LEG_POLICYHOLDER (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_POLICYHOLDER PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_INSURED (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_INSURED PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_BENEFICIARY (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_BENEFICIARY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_BENEF_ALLOCATION (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_BENEF_ALLOCATION PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_AGENT (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_AGENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_AGENCY (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_AGENCY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_AGENT_HIERARCHY (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_AGENT_HIERARCHY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_COMMISSION_PLAN (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_COMMISSION_PLAN PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_COMMISSION_RATE (
+    RATE_TABLE_ID        CHAR(12)        NOT NULL,
+    PRODUCT_CODE         VARCHAR(20),
+    STATE                CHAR(2),
+    AGE                  SMALLINT,
+    GENDER               CHAR(1),
+    SMOKER_FLAG          CHAR(1),
+    RATE_PER_1000        DECIMAL(10,4),
+    EFFECTIVE_START      DATE,
+    EFFECTIVE_END        DATE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_COMMISSION_RATE PRIMARY KEY (RATE_TABLE_ID)
+);
+
+CREATE TABLE LEG_COMMISSION_TXN (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_COMMISSION_TXN PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_POLICY_MASTER (
+    POLICY_NUMBER        CHAR(12)        NOT NULL,
+    PRODUCT_CODE         VARCHAR(20)     NOT NULL,
+    OWNER_ID             CHAR(12)        NOT NULL,
+    INSURED_ID           CHAR(12)        NOT NULL,
+    ISSUE_DATE           DATE            NOT NULL,
+    EFFECTIVE_DATE       DATE            NOT NULL,
+    EXPIRY_DATE          DATE,
+    STATUS_CODE          CHAR(2)         NOT NULL,
+    FACE_AMOUNT          DECIMAL(18,2)   NOT NULL,
+    PREMIUM_MODE_CD      CHAR(1)         NOT NULL,
+    BILLING_ACCT_ID      CHAR(12),
+    AGENCY_ID            CHAR(12),
+    DIVISION_CD          CHAR(4),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_POLICY_MASTER PRIMARY KEY (POLICY_NUMBER)
+);
+
+CREATE TABLE LEG_POLICY_TERM (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_POLICY_TERM PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_POLICY_STATUS_HIST (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_POLICY_STATUS_HIST PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_POLICY_NOTE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_POLICY_NOTE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_FORM (
+    DOCUMENT_ID          CHAR(14)        NOT NULL,
+    ENTITY_TYPE          VARCHAR(30),
+    ENTITY_ID            CHAR(14),
+    DOC_TYPE             VARCHAR(30),
+    MIME_TYPE            VARCHAR(60),
+    URI                  VARCHAR(400),
+    HASH                 CHAR(64),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_FORM PRIMARY KEY (DOCUMENT_ID)
+);
+
+CREATE TABLE LEG_DOCUMENT (
+    DOCUMENT_ID          CHAR(14)        NOT NULL,
+    ENTITY_TYPE          VARCHAR(30),
+    ENTITY_ID            CHAR(14),
+    DOC_TYPE             VARCHAR(30),
+    MIME_TYPE            VARCHAR(60),
+    URI                  VARCHAR(400),
+    HASH                 CHAR(64),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_DOCUMENT PRIMARY KEY (DOCUMENT_ID)
+);
+
+CREATE TABLE LEG_PRODUCT (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_PRODUCT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_PRODUCT_STATE_RULE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_PRODUCT_STATE_RULE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_UNDERWRITING_RULE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_UNDERWRITING_RULE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_RISK_CLASS (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_RISK_CLASS PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_COVERAGE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_COVERAGE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_COVERAGE_TERM (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_COVERAGE_TERM PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_RIDER (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_RIDER PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_RIDER_TERM (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_RIDER_TERM PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_RATE_TABLE (
+    RATE_TABLE_ID        CHAR(12)        NOT NULL,
+    PRODUCT_CODE         VARCHAR(20),
+    STATE                CHAR(2),
+    AGE                  SMALLINT,
+    GENDER               CHAR(1),
+    SMOKER_FLAG          CHAR(1),
+    RATE_PER_1000        DECIMAL(10,4),
+    EFFECTIVE_START      DATE,
+    EFFECTIVE_END        DATE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_RATE_TABLE PRIMARY KEY (RATE_TABLE_ID)
+);
+
+CREATE TABLE LEG_RATE_FACTOR (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_RATE_FACTOR PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_BILLING_ACCOUNT (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_BILLING_ACCOUNT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_PREMIUM_SCHEDULE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_PREMIUM_SCHEDULE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_PREMIUM_INVOICE (
+    INVOICE_NUMBER       CHAR(14)        NOT NULL,
+    BILLING_ACCT_ID      CHAR(12)        NOT NULL,
+    POLICY_NUMBER        CHAR(12),
+    INVOICE_DATE         DATE            NOT NULL,
+    DUE_DATE             DATE            NOT NULL,
+    AMOUNT               DECIMAL(18,2)   NOT NULL,
+    TAX_AMOUNT           DECIMAL(18,2)   DEFAULT 0,
+    FEE_AMOUNT           DECIMAL(18,2)   DEFAULT 0,
+    STATUS_CODE          CHAR(2)         NOT NULL,
+    PAYMENT_TERMS_CD     CHAR(3),
+    CURRENCY_CD          CHAR(3)         DEFAULT 'USD',
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_PREMIUM_INVOICE PRIMARY KEY (INVOICE_NUMBER)
+);
+
+CREATE TABLE LEG_PREMIUM_PAYMENT (
+    PAYMENT_ID           CHAR(14)        NOT NULL,
+    INVOICE_NUMBER       CHAR(14),
+    POLICY_NUMBER        CHAR(12),
+    AMOUNT               DECIMAL(18,2)   NOT NULL,
+    METHOD_CODE          CHAR(2),
+    CHECK_NO             VARCHAR(20),
+    POSTED_TS            TIMESTAMP,
+    GL_POSTED_FLAG       CHAR(1)         DEFAULT 'N',
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_PREMIUM_PAYMENT PRIMARY KEY (PAYMENT_ID)
+);
+
+CREATE TABLE LEG_REFUND (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_REFUND PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_ADJUSTMENT (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_ADJUSTMENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_DUNNING_EVENT (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_DUNNING_EVENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_PAYMENT_METHOD (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_PAYMENT_METHOD PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_CLAIM (
+    CLAIM_NUMBER         CHAR(14)        NOT NULL,
+    POLICY_NUMBER        CHAR(12)        NOT NULL,
+    CLAIM_TYPE_CODE      CHAR(6)         NOT NULL,
+    LOSS_DATE            DATE            NOT NULL,
+    REPORTED_DATE        DATE            NOT NULL,
+    STATUS_CODE          CHAR(2)         NOT NULL,
+    RESERVE_TOTAL        DECIMAL(18,2)   DEFAULT 0,
+    PAID_TOTAL           DECIMAL(18,2)   DEFAULT 0,
+    BENEFICIARY_ID       CHAR(12),
+    ADJUSTER_PARTY_ID    CHAR(12),
+    LOSS_LOCATION_TXT    VARCHAR(200),
+    CAUSE_CODE           CHAR(4),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CLAIM PRIMARY KEY (CLAIM_NUMBER)
+);
+
+CREATE TABLE LEG_CLAIM_EVENT (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CLAIM_EVENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_CLAIM_PARTY (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CLAIM_PARTY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_CLAIM_RESERVE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CLAIM_RESERVE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_CLAIM_PAYMENT (
+    PAYMENT_ID           CHAR(14)        NOT NULL,
+    INVOICE_NUMBER       CHAR(14),
+    POLICY_NUMBER        CHAR(12),
+    AMOUNT               DECIMAL(18,2)   NOT NULL,
+    METHOD_CODE          CHAR(2),
+    CHECK_NO             VARCHAR(20),
+    POSTED_TS            TIMESTAMP,
+    GL_POSTED_FLAG       CHAR(1)         DEFAULT 'N',
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CLAIM_PAYMENT PRIMARY KEY (PAYMENT_ID)
+);
+
+CREATE TABLE LEG_CLAIM_RECOVERY (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CLAIM_RECOVERY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_LITIGATION (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_LITIGATION PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_SIU_REFERRAL (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_SIU_REFERRAL PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_SUBROGATION (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_SUBROGATION PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_PROVIDER (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_PROVIDER PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_MEDICAL_BILL (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_MEDICAL_BILL PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_REINS_AGREEMENT (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_REINS_AGREEMENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_REINS_CESSION (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_REINS_CESSION PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_GL_POSTING (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_GL_POSTING PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_ACTIVITY (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_ACTIVITY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_TASK (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_TASK PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_USER (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_USER PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_ROLE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_ROLE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_USER_ROLE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_USER_ROLE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_CODE_STATUS (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CODE_STATUS PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_CODE_PRODUCT (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CODE_PRODUCT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_CODE_RIDER (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CODE_RIDER PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_CODE_STATE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CODE_STATE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_CODE_RELATIONSHIP (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CODE_RELATIONSHIP PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_CODE_PAYMENT_METHOD (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_CODE_PAYMENT_METHOD PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_TAX_TABLE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_TAX_TABLE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_BANK_ACCOUNT (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_BANK_ACCOUNT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_AUDIT_LOG (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_AUDIT_LOG PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_FEED_OUT (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_FEED_OUT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_FEED_IN (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_FEED_IN PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_BATCH_JOB (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_BATCH_JOB PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_JCL_SCHEDULE (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_JCL_SCHEDULE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LEG_ERROR_LOG (
+    ROW_ID               CHAR(14)        NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          CHAR(2),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LEG_ERROR_LOG PRIMARY KEY (ROW_ID)
+);
+
+
+-- ==============================
+-- ENRICHED LIFEPRO-STYLE DDL
+-- ==============================
+
+CREATE TABLE LP_PARTY (
+    PARTY_ID             VARCHAR(36)     NOT NULL,
+    FIRST_NAME           VARCHAR(50),
+    MIDDLE_NAME          VARCHAR(50),
+    LAST_NAME            VARCHAR(50),
+    DOB                  DATE,
+    GENDER_CODE          VARCHAR(10),
+    TAX_ID               VARCHAR(15),
+    EMAIL_PRIMARY        VARCHAR(120),
+    PHONE_MOBILE         VARCHAR(20),
+    ACTIVE_FLAG          BOOLEAN         DEFAULT TRUE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_PARTY PRIMARY KEY (PARTY_ID)
+);
+
+CREATE TABLE LP_PARTY_ADDRESS (
+    ADDRESS_ID           VARCHAR(36)     NOT NULL,
+    PARTY_ID             VARCHAR(36),
+    LINE1                VARCHAR(100),
+    LINE2                VARCHAR(100),
+    CITY                 VARCHAR(60),
+    STATE                VARCHAR(10),
+    POSTAL_CODE          VARCHAR(10),
+    COUNTRY              VARCHAR(10),
+    TYPE_CODE            VARCHAR(20),
+    EFFECTIVE_START      DATE,
+    EFFECTIVE_END        DATE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_PARTY_ADDRESS PRIMARY KEY (ADDRESS_ID)
+);
+
+CREATE TABLE LP_PARTY_CONTACT (
+    CONTACT_ID           VARCHAR(36)     NOT NULL,
+    PARTY_ID             VARCHAR(36),
+    CONTACT_TYPE         VARCHAR(20),
+    CONTACT_VALUE        VARCHAR(200),
+    PREFERRED_FLAG       BOOLEAN         DEFAULT FALSE,
+    EFFECTIVE_START      DATE,
+    EFFECTIVE_END        DATE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_PARTY_CONTACT PRIMARY KEY (CONTACT_ID)
+);
+
+CREATE TABLE LP_CUSTOMER (
+    CUSTOMER_ID          VARCHAR(36)     NOT NULL,
+    PARTY_ID             VARCHAR(36)     NOT NULL,
+    KYC_STATUS_CODE      VARCHAR(10),
+    RESIDENCY_CODE       VARCHAR(10),
+    RISK_SCORE           NUMERIC(5,2),
+    PREFERENCES_JSON     JSON,
+    MARKETING_OPT_IN     BOOLEAN         DEFAULT FALSE,
+    ALERT_OPT_IN         BOOLEAN         DEFAULT FALSE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CUSTOMER PRIMARY KEY (CUSTOMER_ID)
+);
+
+CREATE TABLE LP_POLICY_OWNER (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_POLICY_OWNER PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_INSURED (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_INSURED PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_BENEFICIARY (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_BENEFICIARY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_BENEFICIARY_ALLOCATION (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_BENEFICIARY_ALLOCATION PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_AGENT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_AGENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_AGENCY (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_AGENCY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_AGENT_HIERARCHY (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_AGENT_HIERARCHY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_COMMISSION_PLAN (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_COMMISSION_PLAN PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_COMMISSION_RATE (
+    RATE_TABLE_ID        VARCHAR(36)     NOT NULL,
+    PRODUCT_CODE         VARCHAR(30),
+    STATE                VARCHAR(10),
+    AGE                  SMALLINT,
+    GENDER               VARCHAR(10),
+    SMOKER_FLAG          BOOLEAN,
+    RATE_PER_1000        NUMERIC(10,4),
+    EFFECTIVE_START      DATE,
+    EFFECTIVE_END        DATE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_COMMISSION_RATE PRIMARY KEY (RATE_TABLE_ID)
+);
+
+CREATE TABLE LP_COMMISSION_TXN (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_COMMISSION_TXN PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_POLICY (
+    POLICY_ID            VARCHAR(36)     NOT NULL,
+    POLICY_NUMBER        VARCHAR(20)     NOT NULL,
+    PRODUCT_CODE         VARCHAR(30)     NOT NULL,
+    OWNER_ID             VARCHAR(36)     NOT NULL,
+    INSURED_ID           VARCHAR(36)     NOT NULL,
+    ISSUE_DATE           DATE            NOT NULL,
+    EFFECTIVE_DATE       DATE            NOT NULL,
+    EXPIRY_DATE          DATE,
+    STATUS_CODE          VARCHAR(20)     NOT NULL,
+    FACE_AMOUNT          NUMERIC(18,2)   NOT NULL,
+    PREMIUM_MODE_CODE    VARCHAR(10)     NOT NULL,
+    BILLING_ACCOUNT_ID   VARCHAR(36),
+    AGENCY_ID            VARCHAR(36),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_POLICY PRIMARY KEY (POLICY_ID)
+);
+
+CREATE TABLE LP_POLICY_TERM (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_POLICY_TERM PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_POLICY_STATUS_HIST (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_POLICY_STATUS_HIST PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_POLICY_NOTE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_POLICY_NOTE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_POLICY_FORM (
+    DOCUMENT_ID          VARCHAR(36)     NOT NULL,
+    ENTITY_TYPE          VARCHAR(30),
+    ENTITY_ID            VARCHAR(36),
+    DOC_TYPE             VARCHAR(30),
+    MIME_TYPE            VARCHAR(60),
+    URI                  VARCHAR(400),
+    HASH                 CHAR(64),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_POLICY_FORM PRIMARY KEY (DOCUMENT_ID)
+);
+
+CREATE TABLE LP_DOCUMENT (
+    DOCUMENT_ID          VARCHAR(36)     NOT NULL,
+    ENTITY_TYPE          VARCHAR(30),
+    ENTITY_ID            VARCHAR(36),
+    DOC_TYPE             VARCHAR(30),
+    MIME_TYPE            VARCHAR(60),
+    URI                  VARCHAR(400),
+    HASH                 CHAR(64),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_DOCUMENT PRIMARY KEY (DOCUMENT_ID)
+);
+
+CREATE TABLE LP_PRODUCT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_PRODUCT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_PRODUCT_RULE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_PRODUCT_RULE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_UNDERWRITING_RULE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_UNDERWRITING_RULE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_RISK_CLASS (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_RISK_CLASS PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_POLICY_COVERAGE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_POLICY_COVERAGE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_COVERAGE_TERM (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_COVERAGE_TERM PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_POLICY_RIDER (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_POLICY_RIDER PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_RIDER_TERM (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_RIDER_TERM PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_RATE_TABLE (
+    RATE_TABLE_ID        VARCHAR(36)     NOT NULL,
+    PRODUCT_CODE         VARCHAR(30),
+    STATE                VARCHAR(10),
+    AGE                  SMALLINT,
+    GENDER               VARCHAR(10),
+    SMOKER_FLAG          BOOLEAN,
+    RATE_PER_1000        NUMERIC(10,4),
+    EFFECTIVE_START      DATE,
+    EFFECTIVE_END        DATE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_RATE_TABLE PRIMARY KEY (RATE_TABLE_ID)
+);
+
+CREATE TABLE LP_RATE_FACTOR (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_RATE_FACTOR PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_BILLING_ACCOUNT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_BILLING_ACCOUNT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_INVOICE (
+    INVOICE_ID           VARCHAR(36)     NOT NULL,
+    INVOICE_NUMBER       VARCHAR(30)     NOT NULL,
+    BILLING_ACCOUNT_ID   VARCHAR(36)     NOT NULL,
+    POLICY_ID            VARCHAR(36),
+    INVOICE_DATE         DATE            NOT NULL,
+    DUE_DATE             DATE            NOT NULL,
+    AMOUNT               NUMERIC(18,2)   NOT NULL,
+    TAX_AMOUNT           NUMERIC(18,2)   DEFAULT 0,
+    FEE_AMOUNT           NUMERIC(18,2)   DEFAULT 0,
+    STATUS_CODE          VARCHAR(20)     NOT NULL,
+    PAYMENT_TERMS_CODE   VARCHAR(10),
+    CURRENCY_CODE        CHAR(3)         DEFAULT 'USD',
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_INVOICE PRIMARY KEY (INVOICE_ID)
+);
+
+CREATE TABLE LP_PAYMENT (
+    PAYMENT_ID           VARCHAR(36)     NOT NULL,
+    INVOICE_ID           VARCHAR(36),
+    POLICY_ID            VARCHAR(36),
+    AMOUNT               NUMERIC(18,2)   NOT NULL,
+    METHOD_CODE          VARCHAR(20),
+    REFERENCE_NO         VARCHAR(40),
+    POSTED_TS            TIMESTAMP,
+    GL_POSTED_FLAG       BOOLEAN         DEFAULT FALSE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_PAYMENT PRIMARY KEY (PAYMENT_ID)
+);
+
+CREATE TABLE LP_REFUND (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_REFUND PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_ADJUSTMENT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_ADJUSTMENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_DUNNING_EVENT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_DUNNING_EVENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_PAYMENT_METHOD (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_PAYMENT_METHOD PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_PAYMENT_ALLOCATION (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_PAYMENT_ALLOCATION PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_CLAIM (
+    CLAIM_ID             VARCHAR(36)     NOT NULL,
+    CLAIM_NUMBER         VARCHAR(20)     NOT NULL,
+    POLICY_ID            VARCHAR(36)     NOT NULL,
+    CLAIM_TYPE_CODE      VARCHAR(20)     NOT NULL,
+    LOSS_DATE            DATE            NOT NULL,
+    REPORTED_DATE        DATE            NOT NULL,
+    STATUS_CODE          VARCHAR(20)     NOT NULL,
+    RESERVE_TOTAL        NUMERIC(18,2)   DEFAULT 0,
+    PAID_TOTAL           NUMERIC(18,2)   DEFAULT 0,
+    BENEFICIARY_ID       VARCHAR(36),
+    ADJUSTER_PARTY_ID    VARCHAR(36),
+    LOSS_LOCATION_TEXT   VARCHAR(500),
+    CAUSE_CODE           VARCHAR(10),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CLAIM PRIMARY KEY (CLAIM_ID)
+);
+
+CREATE TABLE LP_CLAIM_EVENT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CLAIM_EVENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_CLAIM_PARTY_ROLE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CLAIM_PARTY_ROLE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_RESERVE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_RESERVE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_CLAIM_PAYMENT (
+    PAYMENT_ID           VARCHAR(36)     NOT NULL,
+    INVOICE_ID           VARCHAR(36),
+    POLICY_ID            VARCHAR(36),
+    AMOUNT               NUMERIC(18,2)   NOT NULL,
+    METHOD_CODE          VARCHAR(20),
+    REFERENCE_NO         VARCHAR(40),
+    POSTED_TS            TIMESTAMP,
+    GL_POSTED_FLAG       BOOLEAN         DEFAULT FALSE,
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CLAIM_PAYMENT PRIMARY KEY (PAYMENT_ID)
+);
+
+CREATE TABLE LP_CLAIM_RECOVERY (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CLAIM_RECOVERY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_LITIGATION (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_LITIGATION PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_SIU_CASE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_SIU_CASE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_SUBROGATION (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_SUBROGATION PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_PROVIDER (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_PROVIDER PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_MEDICAL_BILL (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_MEDICAL_BILL PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_REINS_AGREEMENT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_REINS_AGREEMENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_REINS_CESSION (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_REINS_CESSION PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_GL_ENTRY (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_GL_ENTRY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_ACTIVITY (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_ACTIVITY PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_TASK (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_TASK PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_USER (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_USER PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_ROLE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_ROLE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_USER_ROLE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_USER_ROLE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_CODE_STATUS (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CODE_STATUS PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_CODE_PRODUCT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CODE_PRODUCT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_CODE_RIDER (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CODE_RIDER PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_CODE_STATE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CODE_STATE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_CODE_RELATIONSHIP (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CODE_RELATIONSHIP PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_CODE_PAYMENT_METHOD (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_CODE_PAYMENT_METHOD PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_TAX_TABLE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_TAX_TABLE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_BANK_ACCOUNT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_BANK_ACCOUNT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_AUDIT_EVENT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_AUDIT_EVENT PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_OUTBOUND_FEED (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_OUTBOUND_FEED PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_INBOUND_FEED (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_INBOUND_FEED PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_JOB_SCHEDULE (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_JOB_SCHEDULE PRIMARY KEY (ROW_ID)
+);
+
+CREATE TABLE LP_ERROR_EVENT (
+    ROW_ID               VARCHAR(36)     NOT NULL,
+    REF_CODE             VARCHAR(30),
+    NAME                 VARCHAR(100),
+    DESCRIPTION          VARCHAR(500),
+    STATUS_CODE          VARCHAR(20),
+    CREATED_TS           TIMESTAMP       NOT NULL,
+    UPDATED_TS           TIMESTAMP       NOT NULL
+,    CONSTRAINT PK_LP_ERROR_EVENT PRIMARY KEY (ROW_ID)
+);

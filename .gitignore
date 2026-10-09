@@ -1,0 +1,67 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pdm-build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE/editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python packaging / build outputs
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+pip-wheel-metadata/
+
+# Logs and runtime files
+logs/
+*.log
+
+# Data science / model artifacts
+models/
+catboost_info/
+outputs/
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+*.pt
+*.ckpt
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Environment files
+.env
+.env.*
+
+# Local config overrides
+local_settings.py
+settings_local.py
+
+# Optional: keep generated source/data folders if needed
+# data/source/
+# data/target/
+# data/*.csv
+
+# Docker / compose local state (optional)
+.docker/
