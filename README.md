@@ -198,6 +198,19 @@ If you are using PowerShell, activation is usually:
 .\.venv\Scripts\Activate.ps1
 ```
 
+## Data upload requirement
+
+This project expects the local data files to be placed in the `data/` directory before running the pipeline. Because `data/` is ignored by git, you must upload or copy your project-specific files into that folder manually in your working environment.
+
+Required files typically include:
+
+- `data/source.csv` and `data/target.csv` for metadata definition
+- `data/source/` for legacy system table CSVs
+- `data/target/` for target system table CSVs
+- any configuration-specific datasets referenced by `configs/config.yaml`
+
+If these files are missing, the training and prediction scripts will not be able to build the mapping features or generate valid outputs.
+
 ## Typical workflow
 
 ### 1. Prepare the table metadata

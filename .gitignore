@@ -58,10 +58,10 @@ outputs/
 local_settings.py
 settings_local.py
 
-# Optional: keep generated source/data folders if needed
-# data/source/
-# data/target/
-# data/*.csv
+# Project data files and generated datasets
+# Ignore all project data content by default to keep local/raw data out of source control
+# Remove or comment these if you want to track specific dataset files.
+data/
 
 # Docker / compose local state (optional)
 .docker/
